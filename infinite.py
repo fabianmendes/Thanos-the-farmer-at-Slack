@@ -52,7 +52,7 @@ class Gauntlet:
             try:
                 there.bot.places_to_handle = place + {id_c : c_name}
             except KeyError:
-                print("There's a channel already registered,\n" +\
+                print("There's a channel already registered,\n" +
                       "\t maybe just Thanos is Harvesting on there.")
                 pass
             finally:
