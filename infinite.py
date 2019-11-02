@@ -1,4 +1,3 @@
-# working on it. Last: Nov.01 2019 w/ SpaceGEM (still with SoulGEM)
 import bot
 class Dimension:
     ''' Where is the brainstorm will take place! La siembra, propiamente.'''
@@ -24,6 +23,10 @@ class Dimension:
              "4" : "printing"]
         '''
 
+        self.merged_harvesting = {} # a set with all the harvest
+        self.snapable_words = []
+
+
 
 class Gauntlet:
     def __init__(self):
@@ -33,18 +36,19 @@ class Gauntlet:
         global place, there
         there = self.here #
         place = self.lies # list from bot.Bot()
-        self.stones= {
+        self.stone= {
             "Space" : "space", # places and harvesting. Also locations!
             "Time"  : "time", # Schedule thing! And timing stuff.
             "Soul"  : "soul", # it should be the participants thing.
             "Reality" : "real", # I -just- don't know.
             "Power" : "he do power", #admin and user doings inside.
-            "Mind"  : "he says" # talkative things, you know.
+            "Mind"  : "he says" # talkative things, you know. And so?
         }
 
     class SpaceGEM:
 
         def add_place(self, id_c, c_name):
+            # _to_bot! (in places_to_handle
             try:
                 there.bot.places_to_handle = place + {id_c : c_name}
             except KeyError:
@@ -58,13 +62,11 @@ class Gauntlet:
                     # imprime cada una de los lugares que tiene allí.
             return None
 
-        def place_coordinates(self, event):
-            # still working on it.
-            nro_planet = event["channel"]
-            Gauntlet().here.bot.slack_client.api_call()
-            name_planet = nro_planet["name"]
+        def take_place(self, event):
+            # define atribute channel_id in Dimension. For our harvesting!
+            planet = event["channel"]
+            there.channel_id = planet
             # It seems to be together with SoulGEM enhance_soulMate
-            # putting on it the same variable as this one (event)
 
 
         def confirming_location(self):
@@ -101,6 +103,50 @@ class Gauntlet:
                 pass
             finally:
                 return None
+
+
+    class PowerGEM:
+
+        def merge_harvest(self):
+            return None
+
+        def identify_messagesReactions(self):
+            # for the after-votation! And then, Snap.
+            reactions = there.bot.slack_client.api_call("reactions.list")
+            counter = 0
+            for i in reactions:
+                message = i["message"]
+                reaction = message["reactions"]
+                if ((i["channel"] in there.bot.places_to_handle and i["channel"] == there.channel_id) and
+                    (i["type"] == "message") and ((i["subtype"] == "bot_message") and
+                    message["bot_id"] == there.bot.bot_id)):
+                    
+                    if reaction["name"] in positive_emojis:
+                        # positive_emojis must be a list!
+                        for user in reaction["users"]:
+                            if user in there.participants or user == there.host_user:
+                                counter += 1
+                    if reaction["name"] in negative_emojis:
+                        # negative_emojis must be a list!
+                        for user in reaction["users"]:
+                            if user in there.participants or user == there.host_user:
+                                counter += 1
+                                        
+                        #here... I need a pause. I have to create the Voting command!
+            
+                    
+            there.snapable_words.append(message["text"]) # danmed mots :c to Snap.
+                        
+            return  #deberá retornar si se borra o no (lo manda a la lista de eliminar).
+
+
+
+    class MindGEM:
+        
+        
+        def voting_reacts(self):
+            
+            
 
 
 
