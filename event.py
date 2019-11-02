@@ -1,54 +1,45 @@
-#working on. Last: Nov. 10 2019 w/ wait_for_event [in_action] & SoulGEM @ infinite.py
-# yes
 import command as comando, infinite
+import bot as titan
 
 class Event:
 	def __init__(self, bot):
 		self.bot = bot #esto pareciera que esta demás. Pero no lo está...
 		self.command = comando.Command()
-		self.dimension = infinite.Dimension(bot, )
+		self.dimension = infinite.Dimension(bot)
 
 
 
 	def wait_for_event(self):
 		events = self.bot.slack_client.rtm_read() # ..aquí podemos verlo.
 
-		if self.dimension.in_action == True:
-			in_action = True
-		else:
-			in_action = False
-
-
 		if events and len(events) > 0:
 			for event in events:
 				# "prints" the event
-				self.parse_event(event, in_action)
+				self.parse_event(event)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	def parse_event(self, event, action):
+	def parse_event(self, event):
 
 		#verifications, if event["channel"] in diccionario de bot.Bot().places_to_handle and its value is True:
 		# if False:  escuchar el text y to-do eso (que ya está escrito).
 		# comment else: .
+		gem = titan.Bot().places_to_handle
+		#  verify listing places   "  ".
+		types = ["message", ]
+		if event and  in event and
+		if event["channel"] in gem and gem[event["channel"]]:
+			# now verifies phase,
+			Tata = True # each phase.
+			if self.dimension.phases == Tata:
+
+				# TODO aca uno de los methods para que registry!
+				#
+				return
+
+
+
+
+
 
 
 
