@@ -110,43 +110,81 @@ class Gauntlet:
         def merge_harvest(self):
             return None
 
-        def identify_messagesReactions(self):
+        def identify_messages_and_reactions(self): # In construction. TODO harvesting thing.
+            '''
             # for the after-votation! And then, Snap.
             reactions = there.bot.slack_client.api_call("reactions.list")
             counter = 0
+            positive = 0 # counter
+            negative = 0 # counter
             for i in reactions:
                 message = i["message"]
                 reaction = message["reactions"]
                 if ((i["channel"] in there.bot.places_to_handle and i["channel"] == there.channel_id) and
                     (i["type"] == "message") and ((i["subtype"] == "bot_message") and
                     message["bot_id"] == there.bot.bot_id)):
-                    
+
                     if reaction["name"] in positive_emojis:
                         # positive_emojis must be a list!
                         for user in reaction["users"]:
                             if user in there.participants or user == there.host_user:
                                 counter += 1
+                                positive += 1
                     if reaction["name"] in negative_emojis:
                         # negative_emojis must be a list!
                         for user in reaction["users"]:
                             if user in there.participants or user == there.host_user:
                                 counter += 1
-                                        
+                                negative += 1
+            return counter, positive, negative
                         #here... I need a pause. I have to create the Voting command!
-            
-                    
-            there.snapable_words.append(message["text"]) # danmed mots :c to Snap.
-                        
+
+            I have to create the listing mots and sub mots. For the harvesting first!
+                if negative == len(there.participants):
+                    self.to_snap(message["text"]) # danmed mots :c to Snap.
+                if positive > 0:
+                    write = "The word: " + message["text"] + " was saved by" )
+                    print(write)
+                    # say_to_the_group()
+                if positive == len(there.participants):
+                    pass # next word & disable the scheduled message.
+            '''
             return  #deberá retornar si se borra o no (lo manda a la lista de eliminar).
+
+        def thanos_ts_message(self, event): # incomplete.
+            """ requirements:
+            verify que "subtype" == "bot_message" & "bot_id" == bot.id
+            verify "text" == a la palabra que tocaba (que si mot[n], por decir ejemplo)
+            por obviedad, pero importante, el evento debió ser en dicho mismo canal.
+            Al decir la palabra en la votación, recordar finalizar el proceso interno de
+            nuestro Bot puesto a que necesitaremos que reciba o lea su propio evento! """
+
+            return event["ts"]
+
+        def voting(self): #comming soon. TODO identify Thanos' messages, and save its 'ts'.
+            return
+
+
+
+
+
+
+
+
+        def to_snap(self, word,):
+            there.snapable_words.append(word)
+            print("The word: " + word + " was just added to the 'Naughty list'.")
+
+
 
 
 
     class MindGEM:
-        
-        
+
+
         def voting_reacts(self):
-            
-            
+            return None # planning. Coming soon. TODO harvesting, at first!
+
 
 
 
