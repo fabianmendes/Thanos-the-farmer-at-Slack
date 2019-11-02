@@ -1,20 +1,19 @@
-# working on it. Last: Nov.01 2019 w/ SoulGEM
-
+# working on it. Last: Nov.01 2019 w/ SpaceGEM (still with SoulGEM)
 import bot
 class Dimension:
     ''' Where is the brainstorm will take place! La siembra, propiamente.'''
-    def __init__(self, bot,):
+    def __init__(self, bot):
         self.bot = bot
 
-        self.channel_id = id_place
-        self.channel_name = name_place
+        self.channel_id = False
+        # self.channel_name = name_place # disable, it is not necessary.
 
         self.host_user = {}  # a person. Its i.d., actually
-        self.participants = people # a list.
+        self.participants = {} # a set
 
         self.in_action = False
 
-        self.date =13
+        # self.date =13
         self.phases = []
         '''     done/processing/doing/not yet there.
         This next it's just a reference of it's meaning. Up to 5!
@@ -28,10 +27,12 @@ class Dimension:
 
 class Gauntlet:
     def __init__(self):
+
         self.here = Dimension(bot)
         self.lies = self.here.bot.places_to_handle
-        global place
-        place = Gauntlet().lies  # 'places' was changed to 'lies'.
+        global place, there
+        there = self.here #
+        place = self.lies # list from bot.Bot()
         self.stones= {
             "Space" : "space", # places and harvesting. Also locations!
             "Time"  : "time", # Schedule thing! And timing stuff.
@@ -45,7 +46,7 @@ class Gauntlet:
 
         def add_place(self, id_c, c_name):
             try:
-                Dimension(bot).bot.places_to_handle = place + {id_c : c_name}
+                there.bot.places_to_handle = place + {id_c : c_name}
             except KeyError:
                 print("There's a channel already registered,\n" +\
                       "\t maybe just Thanos is Harvesting on there.")
@@ -55,26 +56,51 @@ class Gauntlet:
                 for i in place:
                     print(i +"\n")
                     # imprime cada una de los lugares que tiene allí.
-
             return None
 
-        def its_here_(self, a_id):
-            if a_id in place:
+        def place_coordinates(self, event):
+            # still working on it.
+            nro_planet = event["channel"]
+            Gauntlet().here.bot.slack_client.api_call()
+            name_planet = nro_planet["name"]
+            # It seems to be together with SoulGEM enhance_soulMate
+            # putting on it the same variable as this one (event)
+
+
+        def confirming_location(self):
+            if there.channel_id in bot.Bot().places_to_handle:
+                # might ups out a False or an error, because the way of calling it.
                 return True
             else:
                 return False
 
+
     class SoulGEM:
 
         def enhance_soulMate(self, event):
-            person = event["user"]["id"]
-            alias = event["user"]["name"]
+            person = event["user"]
+            global alias
+            api_call = there.bot.api_call("users.list")
+            users = api_call.get('members')
+            for user in users:
+                if 'id' in user == person:
+                    alias = user.get('name')
+
             self.hosting_user(person, alias)
-            return
+            return None
 
         def hosting_user(self, id_person, its_name):
-            Dimension(bot).host_user += {id_person : its_name}
-            return None
+            try:
+                # Dimension(bot) is there
+                there.host_user += {id_person : its_name}
+                # this adds our host to the respective Dimension!
+            except KeyError:
+                print("The harvesting is already hosted by " +
+                      there.host_user[id_person] +
+                      ",\n with the alias: " + its_name)
+                pass
+            finally:
+                return None
 
 
 
