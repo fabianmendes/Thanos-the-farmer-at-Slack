@@ -1,6 +1,5 @@
 #working on. Last: Nov. 10 2019 w/ wait_for_event [in_action] & SoulGEM @ infinite.py
 # yes
-
 import command as comando, infinite
 
 class Event:
@@ -18,7 +17,7 @@ class Event:
 			in_action = True
 		else:
 			in_action = False
-		
+
 
 		if events and len(events) > 0:
 			for event in events:
@@ -46,6 +45,12 @@ class Event:
 
 
 	def parse_event(self, event, action):
+
+		#verifications, if event["channel"] in diccionario de bot.Bot().places_to_handle and its value is True:
+		# if False:  escuchar el text y to-do eso (que ya está escrito).
+		# comment else: .
+
+
 
 		if event and 'text' in event and self.bot.bot_id in event['text']:
 			self.handle_mention(event['user'], event['text'].split(self.bot.bot_id)[1].strip().lower(), event['channel'])
